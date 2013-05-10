@@ -46,7 +46,7 @@ Aliases: ***fire***, ***signal***
 
 ## Some Examples ##
 
-Let's create an ***Dog*** class. Every dog can have several friends that would like to be informed when something happens with their friend. Because of that we extend the EventEmitter class so that the signaling procces will be as easy as possible.
+Let's create a ***Dog*** class. Every dog can have several friends that would like to be informed when something happens with their friend. Because of that we extend the EventEmitter class so that the signaling procces will be as easy as possible.
 
 ```javascript
 var Dog = Shiro.EventEmitter.extend({
