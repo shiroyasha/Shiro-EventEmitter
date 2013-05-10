@@ -1,70 +1,82 @@
-# Shiro EventEmitter - Observer pattern for Javascript#
+## Shiro EventEmitter - Observer pattern for Javascript##
 
-This is a simple implementation of the observer pattern for javascript.It is based upon jquery trigger, and backbone event model. It supports creating custom not DOM related events for javascript classes.
+This is a simple implementation of the observer pattern for javascript. It is based upon jquery trigger, and backbone event model. It supports creating custom not DOM related events for javascript objects.
 
 It is aimed to be lightweight and independent of big libraries. The only dependicies it requires are 
-1. underscore.js
+
+1. [underscore.js](http://underscorejs.org/)
 2. [Shiro-Class](https://github.com/shiroyasha/shiro-class)
 
 ## Method reference ##
 
-####SomeClass.extend( definition, [classDefinitions])####
-Extend is a way to inherit some class with your method definiton passed as an argument to the function. 
-The optional parameter classDefinitions adds statis(class) methods on the class itself.
+### Extend and initialize ###
+Sets the maximum number of listeners for a particular event on the object. This is set as a security mechanism to stop accidental memory leaks.
+
+### setMaximumListeners( num ) ###
+Sets the maximum number of listeners for a particular event on the object. This is set as a security mechanism to stop accidental memory leaks.
     
-#### The ***init*** method ####
-The init method in definiton is used to initialize the instance. It ***SHOULD RECIEVE NO ARGUMENTS*** at all,
-because the prefered method of passing arugments to to constructor is by sending an object that contains all
-the attributes needed for the class that the library automaticly appends. [Why we do this?](#)
+### getMaximumListeners( num ) ###
+Gets the current maximum number of listeners for an event.
 
-### The ***this.__super__*** value ###
-The ***this.__super__*** keyword is used to access the parents methods or values, it can come handy when we overwrite some methods in the child class but wan't to access the original value.
+### on(name, listener, [context] ) ###
+Sets up a listener to event with the given name. The listeners are propogated in the order they are appended. The optonal argument context helps to keep the pointer for ***this*** in object oriented code.
 
-####SomeClass.alias( name, listOfAlises )####
-    Creates aliases for some class methods, see examples.
+Aliases: ***addListener***, ***addEventListener***
+
+### once(name, listener, [context] ) ###
+Sets up a listener which is automatically removed after first usage. The arguments behave like on the ***on*** method.
+
+### once(name, listener, [context] ) ###
+Sets up a listener which is automatically removed after first usage. The arguments behave like on the ***on*** method.
+
+### remove(name, listener) ###
+Removes a listener that listens to an event with a given name.
+
+Aliases: ***off***, ***removeListener***, ***removeEventListener***
+
+### removeAll(name, listener) ###
+Removes all listeners that listens to an event with a given name.
+
+Aliases: ***offAll***, ***removeAllListeners***, ***removeAllEventListeners***
+
+### emit(name, arguments...) ###
+Emits an event on the object with the given name. The listeners are them invoked in the order they were added. The optional arguments are sent to the listeners.
+
+Aliases: ***fire***, ***signal***
 
 ## Some Examples ##
 
-Let's create an ***Animal*** class. Each created animal can ***run*** with some ***speed***.
-```javascript
-var Animal = Object.extend({
-    run: function() {
-        console.log('running with speed', this.speed, 'km/h' );
-    },
-    
-    speak: function() {
-        console.log('i don\'t know how to speak');        
-    }
-});
-```
+Let's create an ***Dog*** class. Every dog can have several friends that would like to be informed when something happens with their friend. Because of that we extend the EventEmitter class so that the signaling procces will be as easy as possible.
 
-***Extend*** the ***animal class*** and make a more specific implementation for ***dogs***.
 ```javascript
-// creating a Dog class that extends the class Animal
-var Dog = Animal.extend({
+var Dog = EventEmitter.extend({
     init: function() {
-        console.log('creating a new dog named', this.name );
+        this.__super__.init(); // we must call the parent init to initialize the event emitter
+        this.setMaximumListeners(100); // every dog should have lots of friends
     },
     
-    speak: function() {
-        console.log('wuf wuf');
+    kill: function() {
+        console.log('oooh no, I am dying, better inform all my friends');
+        
+        this.emit('died');
     }
 });
 ```
 
-We want to be able to call the ***speak*** action with different names like ***bark*** or ***beFunny***. 
+Now we want to create a new pal for our friends, let's name him Mike.
 ```javascript
-// example of aliasing
-Dog.alias('speak', ['bark', 'beFunny'] );
+var mike = new Dog({ name: 'mike' });
 ```
 
-Create a ***new instance*** of the ***dog*** class and make it do some things.
+Now let's add some frined( functions that listens to events )
 ```javascript
-var mike = new Dog({speed: 5, name: 'mike'})
+dog.on('died', function() { console.log('i will miss you :\'-(((' + this.name ); }, dog );
+dog.on('died', function() { console.log('RIP my friend'); });
+```
 
-mike.run();   // print out 'running with speed 5 km/h'
-mike.speak(); // prints out 'wuf wuf'
-mike.bark();  // is the same thing as the above call, prints out 'wuf wuf'
+Now let's kill the dog ( muhahaha :D ) and let their friend hate us:
+```javascript
+dog.kill();
 ```
 
 ##The MIT License (MIT)##
