@@ -10,7 +10,7 @@ It is aimed to be lightweight and independent of big libraries. The only dependi
 ## Method reference ##
 
 ### Extend and initialize ###
-Sets the maximum number of listeners for a particular event on the object. This is set as a security mechanism to stop accidental memory leaks.
+The easiest way to use the to use the EventEmitter is to extend it and in the initilizing process call the super's init method to setup the emitter correctly.
 
 ### setMaximumListeners( num ) ###
 Sets the maximum number of listeners for a particular event on the object. This is set as a security mechanism to stop accidental memory leaks.
@@ -49,7 +49,7 @@ Aliases: ***fire***, ***signal***
 Let's create an ***Dog*** class. Every dog can have several friends that would like to be informed when something happens with their friend. Because of that we extend the EventEmitter class so that the signaling procces will be as easy as possible.
 
 ```javascript
-var Dog = EventEmitter.extend({
+var Dog = Shiro.EventEmitter.extend({
     init: function() {
         this.__super__.init(); // we must call the parent init to initialize the event emitter
         this.setMaximumListeners(100); // every dog should have lots of friends
