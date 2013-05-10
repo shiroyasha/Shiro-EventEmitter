@@ -10,7 +10,7 @@ It is aimed to be lightweight and independent of big libraries. The only dependi
 ## Method reference ##
 
 ### Extend and initialize ###
-The easiest way to use the to use the EventEmitter is to extend it and in the initilizing process call the super's init method to setup the emitter correctly.
+The easiest way to use the to use the EventEmitter is to extend it and in the initilizing process call the super's init method to setup the emitter correctly. See the examples to understand better.
 
 ### setMaximumListeners( num ) ###
 Sets the maximum number of listeners for a particular event on the object. This is set as a security mechanism to stop accidental memory leaks.
