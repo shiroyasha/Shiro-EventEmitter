@@ -70,13 +70,13 @@ var mike = new Dog({ name: 'mike' });
 
 Now let's add some frined( functions that listens to events )
 ```javascript
-dog.on('died', function() { console.log('i will miss you :\'-(((' + this.name ); }, dog );
-dog.on('died', function() { console.log('RIP my friend'); });
+mike.on('died', function() { console.log('i will miss you :\'-((( ' + this.name ); }, dog );
+mike.on('died', function() { console.log('RIP my friend'); });
 ```
 
 Now let's kill the dog ( muhahaha :D ) and let their friend hate us:
 ```javascript
-dog.kill();
+mike.kill();
 ```
 
 ##The MIT License (MIT)##
